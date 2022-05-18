@@ -6,15 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --browsers ChromeHeadless --watch=false",
     "prepare": "husky install",
     "lint": "prettier --check .",
     "format": "prettier --write ."
-  },
-  "hosky": {
-    "hooks": {
-      "pre-commit": "npm run format && git add ."
-    }
   },
   "private": true,
   "dependencies": {
