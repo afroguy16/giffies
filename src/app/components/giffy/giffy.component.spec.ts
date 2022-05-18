@@ -1,13 +1,8 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { giffies } from 'src/app/mocks/giffies';
 import { GiffyComponent } from './giffy.component';
-import { GifT } from './types';
 
-const FAKE_DATA: GifT = {
-  id: 'fake ID',
-  url: 'https://giphy.com/clips/buzzfeed-donuts-national-donut-day-mochi-lJHUX2GE4BMqeVHEtY',
-  slug: 'fake slug',
-};
+const FAKE_DATA = { ...giffies[0] };
 
 describe('GiffyComponent', () => {
   let fixture: ComponentFixture<GiffyComponent>;
@@ -22,7 +17,7 @@ describe('GiffyComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GiffyComponent);
     component = fixture.componentInstance;
-    component.props = FAKE_DATA;
+    component.props = { ...FAKE_DATA };
     fixture.detectChanges();
   });
 

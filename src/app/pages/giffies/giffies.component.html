@@ -1,0 +1,7 @@
+<div class="giffies-wrapper">
+  <ul class="giffies">
+    <li *ngFor="let giffy of giffies; trackBy: trackGiffies">
+      <app-giffy [props]="giffy"></app-giffy>
+    </li>
+  </ul>
+</div>

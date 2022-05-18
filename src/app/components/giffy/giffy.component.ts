@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { GifT } from './types';
 
 @Component({
@@ -12,10 +7,6 @@ import { GifT } from './types';
   styleUrls: ['./giffy.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GiffyComponent implements OnInit {
+export class GiffyComponent {
   @Input() props: GifT;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }
