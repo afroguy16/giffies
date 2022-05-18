@@ -1,0 +1,11 @@
+.wrapper {
+  @media (min-width: 39.8rem) {
+    width: 25rem;
+    height: 25rem;
+  }
+}
+img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
