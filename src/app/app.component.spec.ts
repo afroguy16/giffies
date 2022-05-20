@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { GiffiesComponent } from './pages/giffies/giffies.component';
+import { Component } from '@angular/core';
+
+@Component({ selector: 'app-giffies', template: '' }) //so no need to mock the Store since we provide a stub for GiffiesComponent which uses the Store
+class GiffiesStubComponent {}
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, GiffiesComponent],
+      declarations: [AppComponent, GiffiesStubComponent],
     }).compileComponents();
   });
 
