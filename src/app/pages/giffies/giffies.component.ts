@@ -16,10 +16,16 @@ import {
 } from 'rxjs';
 
 import { GifT } from 'src/app/components/giffy/types';
+import { LocaleE, RatingE } from 'src/app/services/enums';
 import { PaginationT } from 'src/app/services/types';
 import { getGiffies } from 'src/app/store/actions/giffies.actions';
 import { GiffiesState } from 'src/app/store/reducers/giffies.reducer';
 import * as fromSelectors from '../../store/selectors/giffies.selectors';
+
+const LIMIT = 9; //per page according to the requirement
+const OFFSET = 0; //for pagination control
+const RATING = RatingE.G; //default rating, this can be changed if I want to extend the functionality to allow users select rating
+const LANG = LocaleE.EN; //default locale, this can be changed if I want to extend the functionality to allow users select locale
 
 @Component({
   selector: 'app-giffies',
@@ -70,7 +76,17 @@ export class GiffiesComponent implements OnInit, OnDestroy {
       )
       .subscribe((query) => {
         if (query !== '') {
-          this.store.dispatch(getGiffies({ payload: query }));
+          this.store.dispatch(
+            getGiffies({
+              payload: {
+                query,
+                limit: LIMIT,
+                offset: OFFSET,
+                rating: RATING,
+                lang: LANG,
+              },
+            })
+          );
         }
       });
   }

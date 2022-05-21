@@ -1,4 +1,5 @@
 import { GifT } from '../components/giffy/types';
+import { LocaleE, RatingE } from './enums';
 
 type FixedDimensionT = {
   webp: string;
@@ -29,4 +30,12 @@ export type GiffiesResponseT = {
   data: ResponseDataT;
   pagination: PaginationT;
   meta: ResponseMetaT;
+};
+
+export type RequestPayloadT = {
+  query: string;
+  limit: number;
+  offset: number;
+  rating: RatingE.G;
+  lang: LocaleE.EN;
 };
