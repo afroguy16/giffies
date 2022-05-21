@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { endpoints } from '../../environments/environment';
 import { GiffiesResponseT } from './types';
 
 @Injectable({
@@ -9,7 +10,8 @@ export class GiffiesService {
   constructor(private http: HttpClient) {}
 
   getGiffies() {
-    console.log('called');
-    return this.http.get<GiffiesResponseT>('api.giphy.com/v1/gifs/search');
+    return this.http.get<GiffiesResponseT>(
+      `${endpoints.search}q=hippy&limit=9&offset=0&rating=g&lang=en`
+    );
   }
 }

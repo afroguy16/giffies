@@ -1,9 +1,12 @@
 import { GifT } from '../components/giffy/types';
 
-export type PaginationT = {
-  offset: number;
-  total_count: number;
-  count: number;
+type FixedDimensionT = {
+  webp: string;
+};
+
+type ResponseImagesT = {
+  fixed_height: FixedDimensionT;
+  fixed_width: FixedDimensionT;
 };
 
 type ResponseMetaT = {
@@ -12,8 +15,18 @@ type ResponseMetaT = {
   response_id: string;
 };
 
+export type PaginationT = {
+  offset: number;
+  total_count: number;
+  count: number;
+};
+
+export type ResponseDataT = Array<
+  Omit<GifT, 'url'> & { images: ResponseImagesT }
+>;
+
 export type GiffiesResponseT = {
-  data: GifT[];
+  data: ResponseDataT;
   pagination: PaginationT;
   meta: ResponseMetaT;
 };

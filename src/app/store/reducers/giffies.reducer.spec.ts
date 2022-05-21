@@ -1,7 +1,7 @@
 import * as fromRoot from './giffies.reducer';
 import { saveGiffies } from '../actions/giffies.actions';
-import { GiffiesResponseT } from 'src/app/services/types';
 import { giffies } from 'src/app/mocks/giffies';
+import { SaveGiffiesPayloadT } from '../actions/types';
 
 const COUNT = 9; //per page according to the requirement
 const FAKE_PAGINATION = {
@@ -30,7 +30,7 @@ describe('GiffiesReducers', () => {
   });
 
   it('should set a new state with the payload once set giffies action is called', () => {
-    const payload: Omit<GiffiesResponseT, 'meta'> = {
+    const payload: SaveGiffiesPayloadT = {
       pagination: FAKE_PAGINATION,
       data: [...giffies],
     };

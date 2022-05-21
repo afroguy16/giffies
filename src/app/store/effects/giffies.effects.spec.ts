@@ -6,7 +6,7 @@ import { createSpyFromClass, Spy } from 'jasmine-auto-spies';
 import { GiffiesService } from 'src/app/services/giffies.service';
 import { GiffiesEffects } from './giffies.effects';
 import { GiffiesActionsE } from '../actions/enums';
-import { giffies } from 'src/app/mocks/giffies';
+import { giffiesResponse, giffies } from 'src/app/mocks/giffies';
 import { GiffiesResponseT } from 'src/app/services/types';
 
 const COUNT = 9; //per page according to the requirement
@@ -35,16 +35,20 @@ describe('GiffiesEffects', () => {
 
   it('should trigger a saveGiffies action if it receives a positive response from getGeffies call', (done: DoneFn) => {
     const payload: GiffiesResponseT = {
-      pagination: { offset: 0, total_count: [...giffies].length, count: COUNT },
-      data: [...giffies],
+      pagination: {
+        offset: 0,
+        total_count: [...giffiesResponse].length,
+        count: COUNT,
+      },
+      data: [...giffiesResponse],
       meta: { msg: 'OK', status: 200, response_id: FAKE_RES_ID },
     };
     actions$ = of({ type: GiffiesActionsE.GET_GIFFIES });
     giffiesServiceSpy.getGiffies.and.returnValue(of(payload));
 
-    const { pagination, data } = payload;
+    const { pagination } = payload;
 
-    const extractedPayload = { pagination, data };
+    const extractedPayload = { pagination, data: [...giffies] };
 
     effects.getGiffies$.pipe(take(1)).subscribe((action) => {
       expect(giffiesServiceSpy.getGiffies).toHaveBeenCalledTimes(1);

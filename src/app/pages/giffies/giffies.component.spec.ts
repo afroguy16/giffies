@@ -4,22 +4,20 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { Action, StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { By } from '@angular/platform-browser';
 
 import * as fromRoot from '../../store/reducers/giffies.reducer';
-import { giffies } from 'src/app/mocks/giffies';
+import { giffies, giffiesResponse } from 'src/app/mocks/giffies';
 
 import { GiffyComponent } from 'src/app/components/giffy/giffy.component';
 import { GiffiesComponent } from './giffies.component';
 import { GiffiesResponseT } from 'src/app/services/types';
 import { createSpyFromClass, Spy } from 'jasmine-auto-spies';
 import { GiffiesService } from 'src/app/services/giffies.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { EffectsModule } from '@ngrx/effects';
 import { GiffiesEffects } from 'src/app/store/effects/giffies.effects';
-
-const FAKE_GIFFIES = [...giffies];
 
 const COUNT = 9; //per page according to the requirement
 const FAKE_RES_ID = 'some random string';
@@ -30,7 +28,6 @@ describe('GiffiesComponent', () => {
   let nativeElement: HTMLElement;
 
   let giffiesServiceSpy: Spy<GiffiesService>;
-  let actions$ = new Observable<Action>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -59,7 +56,7 @@ describe('GiffiesComponent', () => {
   it('should return a list of giffies on successful search', fakeAsync(() => {
     const payload: GiffiesResponseT = {
       pagination: { offset: 0, total_count: [...giffies].length, count: COUNT },
-      data: [...giffies],
+      data: [...giffiesResponse],
       meta: { msg: 'OK', status: 200, response_id: FAKE_RES_ID },
     };
     giffiesServiceSpy.getGiffies.and.returnValue(of(payload));
@@ -80,10 +77,4 @@ describe('GiffiesComponent', () => {
     expect(giffiesServiceSpy.getGiffies).toHaveBeenCalledTimes(1);
     expect(giffyElements.length).toBe(9);
   }));
-
-  // it('should show a list of giffies that is the same with the giffies past as props', () => {
-  //   const giffyElements =
-  //     fixture.debugElement.nativeElement.querySelectorAll('li');
-  //   expect(giffyElements.length).toBe(FAKE_GIFFIES.length);
-  // });
 });
