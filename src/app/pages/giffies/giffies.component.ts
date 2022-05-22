@@ -90,4 +90,8 @@ export class GiffiesComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  print(e: number) {
+    console.log(e, 'here');
+  }
 }

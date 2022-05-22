@@ -18,6 +18,7 @@ import { GiffiesService } from 'src/app/services/giffies.service';
 import { of } from 'rxjs';
 import { EffectsModule } from '@ngrx/effects';
 import { GiffiesEffects } from 'src/app/store/effects/giffies.effects';
+import { PaginationControlComponent } from 'src/app/components/pagination-control/pagination-control.component';
 
 const COUNT = 9; //per page according to the requirement
 const FAKE_RES_ID = 'some random string';
@@ -32,7 +33,11 @@ describe('GiffiesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       teardown: { destroyAfterEach: true },
-      declarations: [GiffiesComponent, GiffyComponent],
+      declarations: [
+        GiffiesComponent,
+        GiffyComponent,
+        PaginationControlComponent,
+      ],
       imports: [
         StoreModule.forRoot({ giffies: fromRoot.giffiesReducer }),
         EffectsModule.forRoot([GiffiesEffects]),
@@ -62,7 +67,7 @@ describe('GiffiesComponent', () => {
     giffiesServiceSpy.getGiffies.and.returnValue(of(payload));
 
     const searchBox = fixture.debugElement.query(By.css('input[type="text"]'));
-    let giffyElements = nativeElement.querySelectorAll('li');
+    let giffyElements = nativeElement.querySelectorAll('[aria-label="giffy"]');
 
     expect(giffyElements.length).toBe(0);
 
@@ -72,7 +77,7 @@ describe('GiffiesComponent', () => {
 
     tick(500);
     fixture.detectChanges();
-    giffyElements = nativeElement.querySelectorAll('li');
+    giffyElements = nativeElement.querySelectorAll('[aria-label="giffy"]');
 
     expect(giffiesServiceSpy.getGiffies).toHaveBeenCalledTimes(1);
     expect(giffyElements.length).toBe(9);

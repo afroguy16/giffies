@@ -10,12 +10,18 @@
   </header>
 
   <ul class="giffies">
-    <li *ngFor="let giffy of giffies$ | async; trackBy: trackGiffies">
+    <li
+      *ngFor="let giffy of giffies$ | async; trackBy: trackGiffies"
+      aria-label="giffy"
+    >
       <app-giffy [props]="giffy"></app-giffy>
     </li>
   </ul>
 
   <footer>
-    <!-- <p>Pagination goes here</p> -->
+    <app-pagination-control
+      [props]="{ perPage: 9, count: 181 }"
+      (selectActivePageNumber)="print($event)"
+    ></app-pagination-control>
   </footer>
 </div>
