@@ -7,6 +7,7 @@ import { PaginationControlPropsT } from './types';
 
 const FAKE_PROPS: PaginationControlPropsT = { perPage: 9, count: 90 };
 const FAKE_PAGE_COUNT = FAKE_PROPS.count / FAKE_PROPS.perPage; //This will break if it has a remainder
+const FAKE_PAGINATION_LENGTH = 20;
 
 @Component({
   selector: `host-component-with-less-than-two-pages`,
@@ -139,19 +140,6 @@ describe('PaginationControlComponent - Host with two pages', () => {
   });
 });
 
-@Component({
-  selector: `host-component-ten-pages`,
-  template: `<app-pagination-control
-    [props]="fakeProps"
-    (selectActivePageNumber)="mockActivePageListener($event)"
-  ></app-pagination-control>`,
-})
-class TestHostComponentWithMoreThanTenPages {
-  fakeProps = { ...FAKE_PROPS, count: 180 };
-
-  mockActivePageListener(e: number) {}
-}
-
 describe('PaginationControlComponent with more than ten pages', () => {
   let component: PaginationControlComponent;
   let fixture: ComponentFixture<PaginationControlComponent>;
@@ -210,7 +198,6 @@ describe('PaginationControlComponent with more than ten pages', () => {
     seventhPageNumberLinkElement = pageSelectorElements[5]; //Seventh page link is currently in the fifth possition, because the pagination has moved two steps forward
     seventhPageNumberLinkElement.click();
     fixture.detectChanges();
-    console.log(firstPageNumberLinkElement.innerText);
     expect(firstPageNumberLinkElement.innerText).not.toContain('1');
     expect(firstPageNumberLinkElement.innerText).toContain('2');
     expect(lastPageNumberLinkElement.innerText).not.toContain(
@@ -224,6 +211,71 @@ describe('PaginationControlComponent with more than ten pages', () => {
     expect(lastPageNumberLinkElement.innerText).toContain(
       FAKE_PAGE_COUNT.toString()
     );
+  });
+
+  it('should  not truncate if a page number in the last part of the list is active', () => {
+    let pageSelectorElements = nativeElement.querySelectorAll('li');
+    const nextPageNumberLinkElement = pageSelectorElements[FAKE_PAGE_COUNT + 1];
+    let tenthPageNumberLinkElement = pageSelectorElements[10];
+
+    expect(pageSelectorElements.length).toBe(12);
+    tenthPageNumberLinkElement.click();
+    nextPageNumberLinkElement.click();
+    nextPageNumberLinkElement.click();
+    nextPageNumberLinkElement.click();
+    nextPageNumberLinkElement.click();
+    nextPageNumberLinkElement.click();
+    nextPageNumberLinkElement.click();
+    nextPageNumberLinkElement.click();
+    nextPageNumberLinkElement.click(); //check to see if the length will when the last part of the list is active
+    fixture.detectChanges();
+
+    pageSelectorElements = nativeElement.querySelectorAll('li');
+    expect(pageSelectorElements.length).toBe(12);
+  });
+});
+
+@Component({
+  selector: `host-component-with-pagination-length`,
+  template: `<app-pagination-control
+    [props]="fakeProps"
+    (selectActivePageNumber)="mockActivePageListener($event)"
+  ></app-pagination-control>`,
+})
+class TestHostComponentWithPaginationLength {
+  fakeProps: PaginationControlPropsT = {
+    ...FAKE_PROPS,
+    count: 180,
+    paginationLength: FAKE_PAGINATION_LENGTH,
+  };
+}
+
+describe('PaginationControlComponent -  Host with pagination length props', () => {
+  let component: TestHostComponentWithPaginationLength;
+  let fixture: ComponentFixture<TestHostComponentWithPaginationLength>;
+  let nativeElement: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [
+        PaginationControlComponent,
+        TestHostComponentWithPaginationLength,
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestHostComponentWithPaginationLength);
+    component = fixture.componentInstance;
+    nativeElement = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+  });
+
+  it('should render a max of ten page list elements', () => {
+    const pageNumberLinkElements = nativeElement.querySelectorAll(
+      '[aria-label="page-number"]'
+    );
+    expect(pageNumberLinkElements.length).toBe(FAKE_PAGINATION_LENGTH); //the same
   });
 });
 
