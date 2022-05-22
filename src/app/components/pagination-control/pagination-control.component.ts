@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
 } from '@angular/core';
@@ -16,7 +17,7 @@ const DEFAULT_PAGINATION_LENGTH = 10; //inspired by Google's pagination length
   styleUrls: ['./pagination-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaginationControlComponent implements OnInit {
+export class PaginationControlComponent implements OnInit, OnChanges {
   @Input() props: PaginationControlPropsT;
   @Output() selectActivePageNumber: EventEmitter<number> = new EventEmitter();
   activePageNumber = 1;
@@ -28,6 +29,10 @@ export class PaginationControlComponent implements OnInit {
       this.props.paginationLength && this.props.paginationLength > 0
         ? this.props.paginationLength
         : this.defaultPaginationLength; //override default if provided by Parent component
+  }
+
+  ngOnChanges(): void {
+    this.activePageNumber = 1;
   }
 
   hasMoreThanTwoPages() {

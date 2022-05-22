@@ -64,6 +64,7 @@ export class GiffiesComponent implements OnInit, OnDestroy {
   }
 
   searchGiffies(e: Event) {
+    this.activePageNumber = 1;
     const query = (e.target as HTMLInputElement).value;
     this.searchValue$.next(query);
   }
@@ -74,7 +75,8 @@ export class GiffiesComponent implements OnInit, OnDestroy {
         payload: {
           query,
           limit: LIMIT,
-          offset: LIMIT * this.activePageNumber, //next pages are a multiple of limit (number per page)
+          offset:
+            this.activePageNumber <= 1 ? 0 : LIMIT * this.activePageNumber - 1,
           rating: RATING,
           lang: LANG,
         },
