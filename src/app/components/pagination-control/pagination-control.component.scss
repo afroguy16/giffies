@@ -1,0 +1,11 @@
+.pagination {
+  font-size: 1.6rem;
+}
+
+.page-item {
+  &.active {
+    a {
+      cursor: default;
+    }
+  }
+}

@@ -6,7 +6,7 @@ import { PaginationControlComponent } from './pagination-control.component';
 import { PaginationControlPropsT } from './types';
 
 const FAKE_PROPS: PaginationControlPropsT = { perPage: 9, count: 90 };
-const FAKE_PAGE_COUNT = FAKE_PROPS.count / FAKE_PROPS.perPage; //This will break if it has a remainder
+const FAKE_PAGE_COUNT = FAKE_PROPS.count / FAKE_PROPS.perPage;
 const FAKE_PAGINATION_LENGTH = 20;
 
 @Component({
@@ -136,6 +136,18 @@ describe('PaginationControlComponent - Host with two pages', () => {
     const previousPageNumberLinkElement = pageSelectorElements[0];
 
     previousPageNumberLinkElement.click();
+    expect(mockActivePageListenerSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not emit an event if an active page link is clicked', () => {
+    const mockActivePageListenerSpy = spyOn(
+      component,
+      'mockActivePageListener'
+    );
+    const pageSelectorElements = nativeElement.querySelectorAll('li');
+    const firstPageNumberLinkElement = pageSelectorElements[1];
+
+    firstPageNumberLinkElement.click();
     expect(mockActivePageListenerSpy).not.toHaveBeenCalled();
   });
 });

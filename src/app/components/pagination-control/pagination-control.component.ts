@@ -88,6 +88,7 @@ export class PaginationControlComponent implements OnInit {
   }
 
   onSelectActivePageNumber(newActivePageNumber: number) {
+    if (this.activePageNumber === newActivePageNumber) return;
     this.activePageNumber = newActivePageNumber;
     this.selectActivePageNumber.emit(this.activePageNumber);
   }
