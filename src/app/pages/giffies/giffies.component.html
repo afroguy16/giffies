@@ -20,8 +20,9 @@
 
   <footer>
     <app-pagination-control
-      [props]="{ perPage: 9, count: 181 }"
-      (selectActivePageNumber)="print($event)"
+      *ngIf="(giffies$ | async) && (giffies$ | async)!.length > 1"
+      [props]="{ perPage: 9, count: (pagination$ | async)?.total_count || 1 }"
+      (selectActivePageNumber)="onSelectActivePageNumber($event)"
     ></app-pagination-control>
   </footer>
 </div>

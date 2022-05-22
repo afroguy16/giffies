@@ -22,8 +22,7 @@ import { getGiffies } from 'src/app/store/actions/giffies.actions';
 import { GiffiesState } from 'src/app/store/reducers/giffies.reducer';
 import * as fromSelectors from '../../store/selectors/giffies.selectors';
 
-const LIMIT = 9; //per page according to the requirement
-const OFFSET = 0; //for pagination control
+const LIMIT = 9; //number per page according to the requirement
 const RATING = RatingE.G; //default rating, this can be changed if I want to extend the functionality to allow users select rating
 const LANG = LocaleE.EN; //default locale, this can be changed if I want to extend the functionality to allow users select locale
 
@@ -38,6 +37,8 @@ export class GiffiesComponent implements OnInit, OnDestroy {
   pagination$: Observable<PaginationT>;
   searchValue$ = new BehaviorSubject('');
   alive = true;
+  activePageNumber = 1;
+  query = '';
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -67,6 +68,20 @@ export class GiffiesComponent implements OnInit, OnDestroy {
     this.searchValue$.next(query);
   }
 
+  private search(query: string) {
+    this.store.dispatch(
+      getGiffies({
+        payload: {
+          query,
+          limit: LIMIT,
+          offset: LIMIT * this.activePageNumber, //next pages are a multiple of limit (number per page)
+          rating: RATING,
+          lang: LANG,
+        },
+      })
+    );
+  }
+
   subscribeToSearch() {
     this.searchValue$
       .pipe(
@@ -76,22 +91,14 @@ export class GiffiesComponent implements OnInit, OnDestroy {
       )
       .subscribe((query) => {
         if (query !== '') {
-          this.store.dispatch(
-            getGiffies({
-              payload: {
-                query,
-                limit: LIMIT,
-                offset: OFFSET,
-                rating: RATING,
-                lang: LANG,
-              },
-            })
-          );
+          this.query = query;
+          this.search(this.query);
         }
       });
   }
 
-  print(e: number) {
-    console.log(e, 'here');
+  onSelectActivePageNumber(newActivePageNumber: number) {
+    this.activePageNumber = newActivePageNumber;
+    this.search(this.query);
   }
 }
