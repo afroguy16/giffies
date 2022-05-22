@@ -1,0 +1,39 @@
+@import "../../../styles-global/variables.scss";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $primary;
+}
+
+.search {
+  width: 80%;
+  max-width: 70rem;
+  margin: 5% 0;
+  input {
+    height: 4rem;
+    border-radius: 3rem;
+    padding-left: 2.5rem;
+  }
+  @media (min-width: 39.8rem) {
+    margin: 2% 0;
+  }
+}
+
+.giffies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  min-height: calc(100vh - 8rem);
+  @media (min-width: 39.8rem) {
+    max-width: calc(25rem * 3); //three grid images
+    min-height: calc(
+      25rem * 3
+    ); //at least three grid images, this is required if there is no item in the list, the height is still preserved, and there are no element jumps.
+  }
+}

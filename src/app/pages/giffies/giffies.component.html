@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <header class="search">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search for giffies"
+      (keyup)="searchGiffies($event)"
+      #search
+    />
+  </header>
+
+  <ul class="giffies">
+    <li *ngFor="let giffy of giffies$ | async; trackBy: trackGiffies">
+      <app-giffy [props]="giffy"></app-giffy>
+    </li>
+  </ul>
+
+  <footer>
+    <!-- <p>Pagination goes here</p> -->
+  </footer>
+</div>
