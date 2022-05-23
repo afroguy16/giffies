@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY } from 'rxjs';
+import { of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { GifT } from 'src/app/components/giffy/types';
-import { LocaleE, RatingE } from 'src/app/services/enums';
 import { GiffiesService } from 'src/app/services/giffies.service';
-import { RequestPayloadT } from 'src/app/services/types';
 import { GiffiesActionsE } from '../actions/enums';
-import { getGiffies } from '../actions/giffies.actions';
-import { SaveGiffiesPayloadT } from '../actions/types';
+import { errorGiffies, getGiffies } from '../actions/giffies.actions';
+import { RequestPayloadT, SaveGiffiesPayloadT } from '../actions/types';
+
+export const DEFAULT_ERROR_MESSAGE =
+  'Something went wrong, please try again after some time';
 
 @Injectable()
 export class GiffiesEffects {
@@ -41,7 +42,7 @@ export class GiffiesEffects {
 
             return { type: GiffiesActionsE.SAVE_GIFFIES, payload };
           }),
-          catchError(() => EMPTY)
+          catchError(() => of(errorGiffies({ message: DEFAULT_ERROR_MESSAGE })))
         );
       })
     )

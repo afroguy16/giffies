@@ -9,9 +9,15 @@ import { GiffyComponent } from './components/giffy/giffy.component';
 import { GiffiesComponent } from './pages/giffies/giffies.component';
 import { GiffiesEffects } from './store/effects/giffies.effects';
 import { giffiesReducer } from './store/reducers/giffies.reducer';
+import { PaginationControlComponent } from './components/pagination-control/pagination-control.component';
 
 @NgModule({
-  declarations: [AppComponent, GiffyComponent, GiffiesComponent],
+  declarations: [
+    AppComponent,
+    GiffyComponent,
+    GiffiesComponent,
+    PaginationControlComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,

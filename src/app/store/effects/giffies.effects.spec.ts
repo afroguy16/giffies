@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { Observable, of, take } from 'rxjs';
 import { createSpyFromClass, Spy } from 'jasmine-auto-spies';
 import { GiffiesService } from 'src/app/services/giffies.service';
-import { GiffiesEffects } from './giffies.effects';
+import { DEFAULT_ERROR_MESSAGE, GiffiesEffects } from './giffies.effects';
 import { GiffiesActionsE } from '../actions/enums';
 import { giffiesResponse, giffies } from 'src/app/mocks/giffies';
 import { GiffiesResponseT } from 'src/app/services/types';
@@ -70,6 +70,29 @@ describe('GiffiesEffects', () => {
       expect(action).toEqual({
         type: GiffiesActionsE.SAVE_GIFFIES,
         payload: extractedPayload,
+      });
+      done();
+    });
+  });
+
+  it('should trigger a errorGiffies action with default error message if request from getGiffies is unsuccessful', (done: DoneFn) => {
+    giffiesServiceSpy.getGiffies.and.throwWith('fake error');
+    actions$ = of({
+      type: GiffiesActionsE.GET_GIFFIES,
+      payload: {
+        query: FAKE_QUERY,
+        limit: FAKE_LIMIT,
+        offset: FAKE_OFFSET,
+        rating: FAKE_RATING,
+        lang: FAKE_LANG,
+      },
+    });
+
+    effects.getGiffies$.pipe(take(1)).subscribe((action) => {
+      expect(giffiesServiceSpy.getGiffies).toHaveBeenCalledTimes(1);
+      expect(action).toEqual({
+        type: GiffiesActionsE.ERROR_GIFFIES,
+        message: DEFAULT_ERROR_MESSAGE,
       });
       done();
     });

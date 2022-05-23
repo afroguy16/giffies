@@ -1,4 +1,5 @@
 .wrapper {
+  width: 40rem; //Not the best design, because images are getting cut off. So the aesthetics is better, but the UX is bad.
   @media (min-width: 39.8rem) {
     width: 25rem;
     height: 25rem;

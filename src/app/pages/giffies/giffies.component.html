@@ -1,4 +1,14 @@
 <div class="wrapper">
+  <div
+    class="alert alert-danger"
+    aria-label="error"
+    role="alert"
+    *ngIf="error !== ''"
+    (click)="resetError()"
+  >
+    {{ error }}
+  </div>
+
   <header class="search">
     <input
       type="text"
@@ -9,13 +19,32 @@
     />
   </header>
 
-  <ul class="giffies">
-    <li *ngFor="let giffy of giffies$ | async; trackBy: trackGiffies">
-      <app-giffy [props]="giffy"></app-giffy>
-    </li>
-  </ul>
+  <div class="giffies-wrapper">
+    <ul class="giffies">
+      <li
+        *ngFor="let giffy of giffies$ | async; trackBy: trackGiffies"
+        aria-label="giffy"
+      >
+        <app-giffy [props]="giffy"></app-giffy>
+      </li>
+    </ul>
+
+    <div
+      class="no-result"
+      aria-label="no result"
+      *ngIf="
+        (pagination$ | async)!.total_count < 1 && searchInit && error === ''
+      "
+    >
+      <p>{{ noResultMessage }}</p>
+    </div>
+  </div>
 
   <footer>
-    <!-- <p>Pagination goes here</p> -->
+    <app-pagination-control
+      *ngIf="(giffies$ | async) && (giffies$ | async)!.length > 1"
+      [props]="{ perPage: 9, count: (pagination$ | async)?.total_count || 1 }"
+      (selectActivePageNumber)="onSelectActivePageNumber($event)"
+    ></app-pagination-control>
   </footer>
 </div>
