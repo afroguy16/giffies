@@ -19,14 +19,26 @@
     />
   </header>
 
-  <ul class="giffies">
-    <li
-      *ngFor="let giffy of giffies$ | async; trackBy: trackGiffies"
-      aria-label="giffy"
+  <div class="giffies-wrapper">
+    <ul class="giffies">
+      <li
+        *ngFor="let giffy of giffies$ | async; trackBy: trackGiffies"
+        aria-label="giffy"
+      >
+        <app-giffy [props]="giffy"></app-giffy>
+      </li>
+    </ul>
+
+    <div
+      class="no-result"
+      aria-label="no result"
+      *ngIf="
+        (pagination$ | async)!.total_count < 1 && searchInit && error === ''
+      "
     >
-      <app-giffy [props]="giffy"></app-giffy>
-    </li>
-  </ul>
+      <p>No result found, try another search query</p>
+    </div>
+  </div>
 
   <footer>
     <app-pagination-control

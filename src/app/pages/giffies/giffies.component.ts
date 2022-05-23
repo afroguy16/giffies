@@ -44,6 +44,7 @@ export class GiffiesComponent implements OnInit, OnDestroy {
   activePageNumber = 1;
   query = '';
   error = '';
+  searchInit = false;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -71,6 +72,8 @@ export class GiffiesComponent implements OnInit, OnDestroy {
       this.resetError();
       this.ref.detectChanges();
     }
+
+    if (!this.searchInit) this.searchInit = true;
 
     this.store.dispatch(
       getGiffies({

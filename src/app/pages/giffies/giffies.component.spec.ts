@@ -83,6 +83,35 @@ describe('GiffiesComponent', () => {
     expect(giffyElements.length).toBe(9);
   }));
 
+  it(`should render no-result if search didn't yield any result`, fakeAsync(() => {
+    const payload: GiffiesResponseT = {
+      pagination: { offset: 0, total_count: 0, count: 0 },
+      data: [],
+      meta: { msg: 'OK', status: 200, response_id: FAKE_RES_ID },
+    };
+    giffiesServiceSpy.getGiffies.and.returnValue(of(payload));
+
+    const searchBox = fixture.debugElement.query(By.css('input[type="text"]'));
+    let giffyElements = nativeElement.querySelectorAll('[aria-label="giffy"]');
+
+    expect(giffyElements.length).toBe(0);
+
+    searchBox.nativeElement.value = 'hippy';
+    searchBox.nativeElement.dispatchEvent(new Event('keyup'));
+    fixture.detectChanges();
+
+    tick(500);
+    fixture.detectChanges();
+    giffyElements = nativeElement.querySelectorAll('[aria-label="giffy"]');
+    const noResultElment = nativeElement.querySelectorAll(
+      '[aria-label="no-result"]'
+    );
+
+    expect(giffiesServiceSpy.getGiffies).toHaveBeenCalledTimes(1);
+    expect(giffyElements.length).toBe(0);
+    expect(noResultElment).toBeTruthy();
+  }));
+
   it('should render an error for an unsuccessful search which returns an error', fakeAsync(() => {
     giffiesServiceSpy.getGiffies.and.throwWith('fake error');
 
