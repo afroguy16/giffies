@@ -31,7 +31,7 @@ describe('GiffiesComponent', () => {
   let giffiesServiceSpy: Spy<GiffiesService>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       teardown: { destroyAfterEach: true },
       declarations: [
         GiffiesComponent,
@@ -48,7 +48,7 @@ describe('GiffiesComponent', () => {
           useValue: createSpyFromClass(GiffiesService),
         },
       ],
-    }).compileComponents();
+    });
     giffiesServiceSpy = TestBed.inject<any>(GiffiesService);
   });
 

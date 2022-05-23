@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { endpoints } from '../../environments/environment';
-import { GiffiesResponseT, RequestPayloadT } from './types';
+import { GiffiesResponseT } from './types';
+import { RequestPayloadT } from '../store/actions/types';
 
 @Injectable({
   providedIn: 'root',

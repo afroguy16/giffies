@@ -8,10 +8,10 @@ describe('GiffyComponent', () => {
   let fixture: ComponentFixture<GiffyComponent>;
   let component: GiffyComponent;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [GiffyComponent],
-    }).compileComponents();
+    });
   });
 
   beforeEach(() => {

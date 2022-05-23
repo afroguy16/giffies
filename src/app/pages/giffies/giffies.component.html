@@ -36,7 +36,7 @@
         (pagination$ | async)!.total_count < 1 && searchInit && error === ''
       "
     >
-      <p>No result found, try another search query</p>
+      <p>{{ noResultMessage }}</p>
     </div>
   </div>
 

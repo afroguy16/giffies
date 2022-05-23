@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { RequestPayloadT } from 'src/app/services/types';
 import { GiffiesActionsE } from './enums';
-import { SaveGiffiesPayloadT } from './types';
+import { RequestPayloadT, SaveGiffiesPayloadT } from './types';
 
 export const getGiffies = createAction(
   GiffiesActionsE.GET_GIFFIES,

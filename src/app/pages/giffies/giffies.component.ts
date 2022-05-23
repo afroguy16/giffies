@@ -29,6 +29,7 @@ import * as fromSelectors from '../../store/selectors/giffies.selectors';
 const LIMIT = 9; //number per page according to the requirement
 const RATING = RatingE.G; //default rating, this can be changed if I want to extend the functionality to allow users select rating
 const LANG = LocaleE.EN; //default locale, this can be changed if I want to extend the functionality to allow users select locale
+const NO_RESULT_MESSAGE = 'No result found, try another search query';
 
 @Component({
   selector: 'app-giffies',
@@ -39,12 +40,13 @@ const LANG = LocaleE.EN; //default locale, this can be changed if I want to exte
 export class GiffiesComponent implements OnInit, OnDestroy {
   giffies$: Observable<GifT[]>;
   pagination$: Observable<PaginationT>;
-  searchValue$ = new BehaviorSubject('');
-  alive = true;
-  activePageNumber = 1;
-  query = '';
   error = '';
   searchInit = false;
+  noResultMessage = NO_RESULT_MESSAGE;
+  private searchValue$ = new BehaviorSubject('');
+  private alive = true;
+  private activePageNumber = 1;
+  private query = '';
 
   constructor(
     private ref: ChangeDetectorRef,

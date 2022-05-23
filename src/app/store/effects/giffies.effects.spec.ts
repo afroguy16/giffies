@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { Observable, of, take } from 'rxjs';
@@ -37,8 +37,6 @@ describe('GiffiesEffects', () => {
 
     giffiesServiceSpy = TestBed.inject<any>(GiffiesService);
     effects = TestBed.inject(GiffiesEffects);
-
-    // jasmine.DEFAULT_TIMEOUT_INTERVAL = 99999999
   });
 
   it('should trigger a saveGiffies action if it receives a positive response from getGeffies call', (done: DoneFn) => {

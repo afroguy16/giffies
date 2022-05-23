@@ -4,10 +4,9 @@ import { of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { GifT } from 'src/app/components/giffy/types';
 import { GiffiesService } from 'src/app/services/giffies.service';
-import { RequestPayloadT } from 'src/app/services/types';
 import { GiffiesActionsE } from '../actions/enums';
 import { errorGiffies, getGiffies } from '../actions/giffies.actions';
-import { SaveGiffiesPayloadT } from '../actions/types';
+import { RequestPayloadT, SaveGiffiesPayloadT } from '../actions/types';
 
 export const DEFAULT_ERROR_MESSAGE =
   'Something went wrong, please try again after some time';

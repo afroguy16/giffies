@@ -31,11 +31,3 @@ export type GiffiesResponseT = {
   pagination: PaginationT;
   meta: ResponseMetaT;
 };
-
-export type RequestPayloadT = {
-  query: string;
-  limit: number;
-  offset: number;
-  rating: RatingE.G;
-  lang: LocaleE.EN;
-};
