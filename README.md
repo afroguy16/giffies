@@ -1,27 +1,32 @@
-# Giffy
+# Description
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.3.
+A grid of images displaying content from GIPHY API. Refer to the PDF for full description.
 
-## Development server
+## Setup
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Setup is easy, you will be up and running in a couple of steps
 
-## Code scaffolding
+1. Clone the repo
+2. Open your terminal and navigate to the folder
+3. Run `npm i`
+4. Run `ng s --open` to open in the browser automatically or `ng s`, then click on [http://localhost:4200](http://localhost:4200) to view it in the browser.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Testing
+
+Code was written in BDD style, so there is 94.26% coverage. Once you go BDD, you can't go back 😀. To test the application, in your terminal, run `ng test` for UI browser test, `ng test --browsers ChromeHeadless` for headless test (my favourite 😀) and `ng test --no-watch --code-coverage` for headless test with the test coverage logged.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Building should be straight-forward, like any other Angular app, though I didn't try it. To build run `ng build`
 
-## Running unit tests
+## Pagination
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+I created a Pagination for this assignment to give the reviewer some insight about my code. In the real world a library should be used for this purpose, because it's a very generic feature and not part of the application. Even if it's done in-house, it should be as a library.
 
-## Running end-to-end tests
+## Known Issues
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Since it's a demo application, it's not perfect and I have highlighted known issues below
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+1. No loading State
+2. Page gets activated before a successful response and stay active even if the response is negative
+   Desired behaviour - should stay inactive until a successful response (not recommended) or should revert back to inactive after a failed response (recommended)
