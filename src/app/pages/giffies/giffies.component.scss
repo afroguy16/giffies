@@ -9,6 +9,16 @@
   background-color: $primary;
 }
 
+.alert {
+  font-size: 1.4rem;
+  cursor: pointer;
+  position: absolute;
+  top: 8rem;
+  @media (min-width: 39.8rem) {
+    top: 0;
+  }
+}
+
 .search {
   width: 80%;
   max-width: 70rem;

@@ -58,7 +58,7 @@ describe('GiffiesComponent', () => {
     nativeElement = fixture.debugElement.nativeElement;
   });
 
-  it('should return a list of giffies on successful search', fakeAsync(() => {
+  it('should render a list of giffies on successful search', fakeAsync(() => {
     const payload: GiffiesResponseT = {
       pagination: { offset: 0, total_count: [...giffies].length, count: COUNT },
       data: [...giffiesResponse],
@@ -81,5 +81,20 @@ describe('GiffiesComponent', () => {
 
     expect(giffiesServiceSpy.getGiffies).toHaveBeenCalledTimes(1);
     expect(giffyElements.length).toBe(9);
+  }));
+
+  it('should render an error for an unsuccessful search which returns an error', fakeAsync(() => {
+    giffiesServiceSpy.getGiffies.and.throwWith('fake error');
+
+    const searchBox = fixture.debugElement.query(By.css('input[type="text"]'));
+
+    searchBox.nativeElement.value = 'hippy';
+    searchBox.nativeElement.dispatchEvent(new Event('keyup'));
+    fixture.detectChanges();
+
+    tick(500);
+    fixture.detectChanges();
+    let errorElement = nativeElement.querySelector('[aria-label="error"]');
+    expect(errorElement).toBeTruthy();
   }));
 });

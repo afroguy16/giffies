@@ -5,6 +5,7 @@ import {
   OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
@@ -18,7 +19,10 @@ import {
 import { GifT } from 'src/app/components/giffy/types';
 import { LocaleE, RatingE } from 'src/app/services/enums';
 import { PaginationT } from 'src/app/services/types';
-import { getGiffies } from 'src/app/store/actions/giffies.actions';
+import {
+  errorGiffies,
+  getGiffies,
+} from 'src/app/store/actions/giffies.actions';
 import { GiffiesState } from 'src/app/store/reducers/giffies.reducer';
 import * as fromSelectors from '../../store/selectors/giffies.selectors';
 
@@ -39,37 +43,35 @@ export class GiffiesComponent implements OnInit, OnDestroy {
   alive = true;
   activePageNumber = 1;
   query = '';
+  error = '';
 
   constructor(
     private ref: ChangeDetectorRef,
-    private store: Store<{ giffies: GiffiesState }>
+    private store: Store<{ giffies: GiffiesState }>,
+    private actions$: Actions
   ) {}
 
   ngOnInit(): void {
+    this.subscribeToError();
     this.subscribeToSearch();
-    this.setStoreData();
+    this.connectToStoreData();
   }
 
   ngOnDestroy(): void {
     this.alive = false;
   }
 
-  private setStoreData() {
+  private connectToStoreData() {
     this.giffies$ = this.store.select(fromSelectors.selectGiffiesCollection);
     this.pagination$ = this.store.select(fromSelectors.selectGiffiesPagination);
   }
 
-  trackGiffies(index: number, giffies: GifT) {
-    return giffies.id;
-  }
-
-  searchGiffies(e: Event) {
-    this.activePageNumber = 1;
-    const query = (e.target as HTMLInputElement).value;
-    this.searchValue$.next(query);
-  }
-
   private search(query: string) {
+    if (this.error !== '') {
+      this.resetError();
+      this.ref.detectChanges();
+    }
+
     this.store.dispatch(
       getGiffies({
         payload: {
@@ -84,7 +86,7 @@ export class GiffiesComponent implements OnInit, OnDestroy {
     );
   }
 
-  subscribeToSearch() {
+  private subscribeToSearch() {
     this.searchValue$
       .pipe(
         debounce(() => interval(500)),
@@ -99,8 +101,34 @@ export class GiffiesComponent implements OnInit, OnDestroy {
       });
   }
 
+  private subscribeToError() {
+    this.actions$
+      .pipe(
+        ofType(errorGiffies),
+        takeWhile(() => this.alive)
+      )
+      .subscribe((action) => {
+        this.error = action.message;
+        this.ref.detectChanges();
+      });
+  }
+
   onSelectActivePageNumber(newActivePageNumber: number) {
     this.activePageNumber = newActivePageNumber;
     this.search(this.query);
+  }
+
+  resetError() {
+    this.error = '';
+  }
+
+  trackGiffies(index: number, giffies: GifT) {
+    return giffies.id;
+  }
+
+  searchGiffies(e: Event) {
+    this.activePageNumber = 1;
+    const query = (e.target as HTMLInputElement).value;
+    this.searchValue$.next(query);
   }
 }

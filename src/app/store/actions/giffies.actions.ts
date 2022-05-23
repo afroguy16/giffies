@@ -11,3 +11,7 @@ export const saveGiffies = createAction(
   GiffiesActionsE.SAVE_GIFFIES,
   props<{ payload: SaveGiffiesPayloadT }>()
 );
+export const errorGiffies = createAction(
+  GiffiesActionsE.ERROR_GIFFIES,
+  props<{ message: string }>()
+);
